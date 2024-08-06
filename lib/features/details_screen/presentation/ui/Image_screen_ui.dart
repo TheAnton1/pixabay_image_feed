@@ -23,7 +23,7 @@ class ImageDetailScreenUI extends StatelessWidget {
           foregroundDecoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(imageDetail.image),
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.contain,
             ),
           ),
         ),
