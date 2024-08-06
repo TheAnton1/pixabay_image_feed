@@ -28,7 +28,7 @@ void main() {
 
       final result = await usecase.call(query, page);
 
-      expect(result, equals(Right(cardEntityList)));
+      expect(result, equals(const Right(cardEntityList)));
     });
 
     test("should get a server failure", () async {

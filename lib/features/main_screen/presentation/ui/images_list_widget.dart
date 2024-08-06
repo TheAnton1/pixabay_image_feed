@@ -12,14 +12,16 @@ class ImagesListWidget extends StatelessWidget {
 
   ImagesListWidget({required this.textEditingController, super.key});
 
-  void setupeScrollController(BuildContext context) {
-    scrollController.addListener(() {
+  void setupScrollController(BuildContext context) {
+    scrollController.addListener(() async {
       if (scrollController.position.atEdge &&
           scrollController.position.pixels != 0) {
         if (textEditingController.text.isEmpty) {
-          context.read<FeedScreenCubit>().loadImages();
+          await context.read<FeedScreenCubit>().loadImages();
         } else {
-          context.read<FeedScreenCubit>().loadSearchImages(textEditingController.text);
+          await context
+              .read<FeedScreenCubit>()
+              .loadSearchImages(textEditingController.text);
         }
       }
     });
@@ -27,7 +29,7 @@ class ImagesListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    setupeScrollController(context);
+    setupScrollController(context);
 
     return BlocBuilder<FeedScreenCubit, FeedScreenState>(
       builder: (context, state) {

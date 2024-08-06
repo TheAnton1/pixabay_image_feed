@@ -1,4 +1,4 @@
-import 'package:feed_test/features/details_screen/presentation/ui/Image_screen_ui.dart';
+import 'package:feed_test/features/details_screen/presentation/ui/image_screen_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_image_mock/network_image_mock.dart';

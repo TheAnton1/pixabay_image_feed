@@ -1,6 +1,6 @@
 import 'package:feed_test/core/common/dimen.dart';
 import 'package:feed_test/features/main_screen/domain/entity/card_entity.dart';
-import 'package:feed_test/features/details_screen/presentation/ui/Image_screen_ui.dart';
+import 'package:feed_test/features/details_screen/presentation/ui/image_screen_ui.dart';
 import 'package:flutter/material.dart';
 
 class ImageCard extends StatelessWidget {

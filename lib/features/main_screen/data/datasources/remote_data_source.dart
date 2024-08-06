@@ -12,7 +12,7 @@ abstract class ImageRemoteDataSource {
 class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
   final http.Client client;
   static const String apiKey = "45143379-b5893fe5f37d14da56cc48a0a";
-  static const int perPage = 10;
+  static const int perPage = 30;
 
   ImageRemoteDataSourceImpl({
     required this.client,
@@ -30,9 +30,7 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
 
   Future<List<CardModel>> _getImagesFromUrl(String url) async {
     try {
-      final response = await client.get(Uri.parse(url), headers: {
-        'Content-Type': 'application/json',
-      });
+      final response = await client.get(Uri.parse(url));
       log(response.headers.toString());
       log(response.statusCode.toString());
       log(url);
@@ -45,7 +43,6 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
       } else {
         throw ServerException();
       }
-      
     } catch (e) {
       log(e.toString());
       throw ServerException();
