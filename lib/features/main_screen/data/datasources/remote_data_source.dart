@@ -29,22 +29,21 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
       "https://pixabay.com/api/?key=$apiKey&q=$query&image_type=photo&page=$page&per_page=$perPage");
 
   Future<List<CardModel>> _getImagesFromUrl(String url) async {
-    try {
-      final response = await client.get(Uri.parse(url));
-      log(response.headers.toString());
-      log(response.statusCode.toString());
-      log(url);
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> images = json.decode(response.body);
-        final List<CardModel> result = images['hits']
-            .map<CardModel>((image) => CardModel.fromjson(image))
-            .toList();
-        return result;
-      } else {
-        throw ServerException();
+    final response = await client.get(Uri.parse(url));
+    log(response.headers.toString());
+    log(response.statusCode.toString());
+    log(url);
+    if (response.statusCode == 200) {
+      try {
+      final Map<String, dynamic> images = json.decode(response.body);
+      final List<CardModel> result = images['hits']
+          .map<CardModel>((image) => CardModel.fromjson(image))
+          .toList();
+      return result;
+      } catch (e) {
+        throw UnexpectedException(message: "Something went wrong while parsing");
       }
-    } catch (e) {
-      log(e.toString());
+    } else {
       throw ServerException();
     }
   }

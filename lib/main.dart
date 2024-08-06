@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider<FeedScreenCubit>(
       create: (context) => sl<FeedScreenCubit>()..loadImages(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Pixabay demo',
         theme: ThemeData.dark(),
         home: const FeedScreenUI(),
       ),

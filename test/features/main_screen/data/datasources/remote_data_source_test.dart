@@ -21,29 +21,22 @@ void main() {
   group("Get all images (remote data source)", () {
     int page = 1;
     String apiKey = "45143379-b5893fe5f37d14da56cc48a0a";
-    int perPage = 10;
+    int perPage = 30;
     String uri =
         "https://pixabay.com/api/?key=$apiKey&image_type=photo&page=$page&per_page=$perPage";
 
     test("Should call a GET method", () async {
-      when(() => mockHttpClient.get(Uri.parse(uri), headers: {
-            'Content-Type': 'application/json',
-          })).thenAnswer((_) async {
+      when(() => mockHttpClient.get(Uri.parse(uri))).thenAnswer((_) async {
         return http.Response(readFile("all_images_response.json"), 200);
       });
 
       await dataSource.getAllImages(page);
 
-      verify(() => mockHttpClient.get(Uri.parse(uri), headers: {
-            'Content-Type': 'application/json',
-          }));
+      verify(() => mockHttpClient.get(Uri.parse(uri)));
     });
     test("Should return list of card models", () async {
-      when(() => mockHttpClient.get(Uri.parse(uri), headers: {
-                'Content-Type': 'application/json',
-              }))
-          .thenAnswer(
-              (_) async => http.Response(readFile("all_images_response.json"), 200));
+      when(() => mockHttpClient.get(Uri.parse(uri))).thenAnswer((_) async =>
+          http.Response(readFile("all_images_response.json"), 200));
 
       final result = await dataSource.getAllImages(page);
 
@@ -59,41 +52,32 @@ void main() {
     });
 
     test("Should throw an ServerException", () async {
-      when(() => mockHttpClient.get(Uri.parse(uri), headers: {
-                'Content-Type': 'application/json',
-              }))
+      when(() => mockHttpClient.get(Uri.parse(uri)))
           .thenAnswer((_) async => http.Response("Something went wrong", 400));
-      
-      expect(() async => await dataSource.getAllImages(page), throwsA(isA<ServerException>()));
+      expect(() async => await dataSource.getAllImages(page),
+          throwsA(isA<ServerException>()));
     });
   });
 
   group("Search images (remote data source)", () {
     int page = 1;
     String apiKey = "45143379-b5893fe5f37d14da56cc48a0a";
-    int perPage = 10;
+    int perPage = 30;
     String query = "kittens";
     String uri =
         "https://pixabay.com/api/?key=$apiKey&q=$query&image_type=photo&page=$page&per_page=$perPage";
     test("Should call a GET method", () async {
-      when(() => mockHttpClient.get(Uri.parse(uri), headers: {
-            'Content-Type': 'application/json',
-          })).thenAnswer((_) async {
+      when(() => mockHttpClient.get(Uri.parse(uri))).thenAnswer((_) async {
         return http.Response(readFile("search_response.json"), 200);
       });
 
       await dataSource.searchImages(query, page);
 
-      verify(() => mockHttpClient.get(Uri.parse(uri), headers: {
-            'Content-Type': 'application/json',
-          }));
+      verify(() => mockHttpClient.get(Uri.parse(uri)));
     });
     test("Should return list of card models", () async {
-      when(() => mockHttpClient.get(Uri.parse(uri), headers: {
-                'Content-Type': 'application/json',
-              }))
-          .thenAnswer(
-              (_) async => http.Response(readFile("search_response.json"), 200));
+      when(() => mockHttpClient.get(Uri.parse(uri))).thenAnswer(
+          (_) async => http.Response(readFile("search_response.json"), 200));
 
       final result = await dataSource.searchImages(query, page);
 
@@ -109,13 +93,11 @@ void main() {
     });
 
     test("Should throw an ServerException", () async {
-      when(() => mockHttpClient.get(Uri.parse(uri), headers: {
-                'Content-Type': 'application/json',
-              }))
+      when(() => mockHttpClient.get(Uri.parse(uri)))
           .thenAnswer((_) async => http.Response("Something went wrong", 400));
 
-      expect(() async => 
-          await dataSource.searchImages(query, page), throwsA(isA<ServerException>()));
+      expect(() async => await dataSource.searchImages(query, page),
+          throwsA(isA<ServerException>()));
     });
   });
 }
