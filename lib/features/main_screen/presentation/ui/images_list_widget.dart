@@ -29,6 +29,7 @@ class ImagesListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool _isLoading = false;
     setupScrollController(context);
 
     return BlocBuilder<FeedScreenCubit, FeedScreenState>(
@@ -39,26 +40,44 @@ class ImagesListWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is FeedLoading) {
+          _isLoading = true;
           images = state.imageList;
         } else if (state is FeedLoaded) {
+          _isLoading = false;
           images = state.images;
         } else if (state is FeedError) {
+          _isLoading = false;
           return Center(
             child: Text(state.message),
           );
-        } else if (state is FeedLoaded && state.images.isEmpty) {
+        } else if (state is FeedEmpty) {
+          _isLoading = false;
           return const Center(
             child: Text("Nothing was found"),
           );
         }
-        return GridView.builder(
-          controller: scrollController,
-          itemCount: images.length,
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: Dimen.width350),
-          itemBuilder: ((context, index) {
-            return ImageCard(cardEntity: images[index]);
-          }),
+        return Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                controller: scrollController,
+                itemCount: images.length,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: Dimen.width350),
+                itemBuilder: ((context, index) {
+                  return ImageCard(cardEntity: images[index]);
+                }),
+              ),
+            ),
+            if (_isLoading)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: Dimen.paddingVertical20),
+                    child: CircularProgressIndicator(),
+                  ),
+                
+              ),
+          ],
         );
       },
     );
